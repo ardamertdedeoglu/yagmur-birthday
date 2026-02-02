@@ -175,20 +175,19 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: currentColor;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-2), var(--color-3));
+  border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
   text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .start-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.9);
   transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .start-button:active {
