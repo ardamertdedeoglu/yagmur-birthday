@@ -60,6 +60,7 @@ onUnmounted(() => {
       :colorIndex="index"
       :isActive="activeIndex === index"
       :isLast="index === stories.length - 1"
+      musicUrl="/yagmur-birthday/music.mp3"
     />
   </main>
 </template>

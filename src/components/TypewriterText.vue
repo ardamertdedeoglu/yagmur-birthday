@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onBeforeUnmount } from 'vue'
 
 const props = defineProps({
   text: {
@@ -9,6 +9,10 @@ const props = defineProps({
   speed: {
     type: Number,
     default: 50,
+  },
+  sentenceDelay: {
+    type: Number,
+    default: 600,
   },
   delay: {
     type: Number,
@@ -25,7 +29,7 @@ const emit = defineEmits(['complete'])
 const displayedText = ref('')
 const isTyping = ref(false)
 const hasStarted = ref(false)
-let timeoutId = null
+const timeoutId = ref(null)
 
 const typeText = () => {
   // Only start once
@@ -38,17 +42,31 @@ const typeText = () => {
 
   const type = () => {
     if (index < props.text.length) {
-      displayedText.value += props.text.charAt(index)
+      const currentChar = props.text.charAt(index)
+      displayedText.value += currentChar
       index++
-      timeoutId = setTimeout(type, props.speed)
+
+      // Check if current character is end of sentence
+      const isSentenceEnd = currentChar === '.' || currentChar === '!' || currentChar === '?'
+      const nextCharExists = index < props.text.length
+
+      // If sentence ends and there's more text, use sentenceDelay; otherwise use normal speed
+      const nextDelay = isSentenceEnd && nextCharExists ? props.sentenceDelay : props.speed
+      timeoutId.value = setTimeout(type, nextDelay)
     } else {
       isTyping.value = false
       emit('complete')
     }
   }
 
-  timeoutId = setTimeout(type, props.delay)
+  timeoutId.value = setTimeout(type, props.delay)
 }
+
+onBeforeUnmount(() => {
+  if (timeoutId.value) {
+    clearTimeout(timeoutId.value)
+  }
+})
 
 // Watch for visibility and start typing when becomes visible
 watch(

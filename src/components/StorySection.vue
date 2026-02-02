@@ -2,6 +2,8 @@
 import { computed, ref, watch } from 'vue'
 import TypewriterText from './TypewriterText.vue'
 import ScrollIndicator from './ScrollIndicator.vue'
+import ConfettiEffect from './ConfettiEffect.vue'
+import MusicPlayer from './MusicPlayer.vue'
 
 const props = defineProps({
   story: {
@@ -20,9 +22,27 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  musicUrl: {
+    type: String,
+    default: '',
+  },
 })
 
 const hasBeenViewed = ref(false)
+const confettiRef = ref(null)
+const musicPlayerRef = ref(null)
+
+const handleTypewriterComplete = () => {
+  if (props.isLast && confettiRef.value) {
+    confettiRef.value.triggerConfetti()
+    // Start music when confetti triggers with a small delay
+    if (musicPlayerRef.value) {
+      setTimeout(() => {
+        musicPlayerRef.value.toggleMusic()
+      }, 500)
+    }
+  }
+}
 
 // Once a section becomes active, mark it as viewed
 watch(
@@ -39,19 +59,33 @@ const colorClass = computed(() => {
   return `color-${colorNumber}`
 })
 
+const textColorClass = computed(() => {
+  const colorNumber = (props.colorIndex % 3) + 1
+  return colorNumber === 1 ? 'dark-text' : ''
+})
+
 // Show text if currently active OR has been viewed before
 const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
 </script>
 
 <template>
   <section class="story-section" :class="colorClass">
+    <ConfettiEffect v-if="isLast" ref="confettiRef" />
+    <MusicPlayer v-if="isLast" ref="musicPlayerRef" :musicUrl="musicUrl" />
     <div class="content-wrapper">
-      <div class="story-content">
-        <TypewriterText :text="story.text" :isVisible="shouldShowText" :speed="40" :delay="300" />
+      <div class="story-content" :class="textColorClass">
+        <TypewriterText
+          :text="story.text"
+          :isVisible="shouldShowText"
+          :speed="40"
+          :sentenceDelay="600"
+          :delay="300"
+          @complete="handleTypewriterComplete"
+        />
       </div>
     </div>
 
-    <ScrollIndicator :show="isActive && !isLast" />
+    <ScrollIndicator :show="isActive && !isLast" :textColorClass="textColorClass" />
   </section>
 </template>
 
@@ -80,6 +114,10 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
 
 .story-section.color-3 {
   background-color: var(--color-3);
+}
+
+.story-content.dark-text {
+  color: var(--text-dark);
 }
 
 .content-wrapper {

@@ -4,13 +4,17 @@ defineProps({
     type: Boolean,
     default: true,
   },
+  textColorClass: {
+    type: String,
+    default: '',
+  },
 })
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="show" class="scroll-indicator">
-      <span class="scroll-text">Scroll</span>
+    <div v-if="show" class="scroll-indicator" :class="textColorClass">
+      <span class="scroll-text">KAYDIR</span>
       <div class="chevrons">
         <span class="chevron"></span>
         <span class="chevron"></span>
@@ -88,5 +92,9 @@ defineProps({
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.scroll-indicator.dark-text {
+  color: var(--text-dark);
 }
 </style>
