@@ -31,17 +31,39 @@ const props = defineProps({
 const hasBeenViewed = ref(false)
 const confettiRef = ref(null)
 const musicPlayerRef = ref(null)
+const typewriterComplete = ref(false)
 
-const handleTypewriterComplete = () => {
+const isFirst = computed(() => props.colorIndex === 0)
+
+const handleTypewriterComplete = async () => {
+  typewriterComplete.value = true
+
   if (props.isLast && confettiRef.value) {
     confettiRef.value.triggerConfetti()
     // Start music when confetti triggers with a small delay
     if (musicPlayerRef.value) {
-      setTimeout(() => {
-        musicPlayerRef.value.toggleMusic()
+      setTimeout(async () => {
+        try {
+          // Try the muted autoplay trick first (works better on mobile)
+          await musicPlayerRef.value.playMutedThenUnmute()
+        } catch (error) {
+          console.error('Failed to start music:', error)
+        }
       }, 500)
     }
   }
+}
+
+const emit = defineEmits(['start-clicked'])
+
+const handleStartClick = () => {
+  // Emit event to parent to load next section
+  emit('start-clicked', props.colorIndex + 1)
+  // Scroll to next page
+  window.scrollBy({
+    top: window.innerHeight,
+    behavior: 'smooth',
+  })
 }
 
 // Once a section becomes active, mark it as viewed
@@ -85,7 +107,14 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
       </div>
     </div>
 
-    <ScrollIndicator :show="isActive && !isLast" :textColorClass="textColorClass" />
+    <ScrollIndicator
+      v-if="isActive && !isLast && !isFirst && typewriterComplete"
+      :textColorClass="textColorClass"
+    />
+
+    <div v-if="isFirst && typewriterComplete && isActive" class="start-button-wrapper">
+      <button class="start-button" @click="handleStartClick">Başla</button>
+    </div>
   </section>
 </template>
 
@@ -131,6 +160,50 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
 
 .story-content {
   text-align: center;
+}
+
+.start-button-wrapper {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.start-button {
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: currentColor;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  text-transform: uppercase;
+}
+
+.start-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+}
+
+.start-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Slide up transition */

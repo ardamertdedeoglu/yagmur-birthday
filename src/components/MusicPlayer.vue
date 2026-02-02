@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { Howl } from 'howler'
 
 const props = defineProps({
   musicUrl: {
@@ -9,47 +10,97 @@ const props = defineProps({
 })
 
 const isPlaying = ref(false)
-const audioRef = ref(null)
+let sound = null
 
 onMounted(() => {
-  if (audioRef.value) {
-    audioRef.value.addEventListener('error', (e) => {
-      console.error('Audio load error:', e.target.error.message, 'URL:', props.musicUrl)
-    })
-    audioRef.value.addEventListener('canplay', () => {
-      console.log('Audio ready to play:', props.musicUrl)
+  if (props.musicUrl) {
+    sound = new Howl({
+      src: [props.musicUrl],
+      html5: true,
+      loop: true,
+      preload: true,
+      onload: () => {
+        console.log('Audio loaded successfully:', props.musicUrl)
+      },
+      onloaderror: (id, error) => {
+        console.error('Audio load error:', error, 'URL:', props.musicUrl)
+      },
+      onplay: () => {
+        isPlaying.value = true
+        console.log('Music playing')
+      },
+      onstop: () => {
+        isPlaying.value = false
+      },
     })
   }
 })
 
-const toggleMusic = () => {
-  if (!audioRef.value) {
-    console.error('Audio element not found')
+onBeforeUnmount(() => {
+  if (sound) {
+    sound.stop()
+    sound.unload()
+  }
+})
+
+const toggleMusic = async () => {
+  if (!sound) {
+    console.error('Sound not initialized')
     return
   }
 
   if (isPlaying.value) {
-    audioRef.value.pause()
+    sound.stop()
+    isPlaying.value = false
   } else {
-    const playPromise = audioRef.value.play()
-    if (playPromise !== undefined) {
-      playPromise.catch((error) => {
-        console.error('Autoplay was prevented:', error)
-      })
+    try {
+      console.log('Attempting to play music with Howler...')
+      sound.play()
+    } catch (error) {
+      console.error('Play failed:', error)
+      isPlaying.value = false
     }
   }
-  isPlaying.value = !isPlaying.value
+}
+
+const playMutedThenUnmute = async () => {
+  if (!sound) {
+    console.error('Sound not initialized')
+    return
+  }
+  try {
+    // Set volume to 0, play, then restore volume
+    const originalVolume = sound.volume()
+    sound.volume(0)
+    sound.play()
+    console.log('Playing muted with Howler...')
+
+    // Unmute after a short delay
+    setTimeout(() => {
+      sound.volume(originalVolume)
+      console.log('Music unmuted and playing')
+    }, 100)
+  } catch (error) {
+    console.error('Muted play failed:', error)
+  }
 }
 
 const handleMusicUrl = (url) => {
-  if (audioRef.value) {
-    audioRef.value.src = url
+  if (sound) {
+    sound.unload()
   }
+  sound = new Howl({
+    src: [url],
+    html5: true,
+    loop: true,
+    preload: true,
+  })
 }
 
 defineExpose({
   setMusicUrl: handleMusicUrl,
   toggleMusic,
+  playMutedThenUnmute,
 })
 </script>
 
@@ -70,7 +121,6 @@ defineExpose({
         <path d="M8 5v14l11-7z" />
       </svg>
     </button>
-    <audio ref="audioRef" :src="musicUrl" loop crossorigin="anonymous"></audio>
   </div>
 </template>
 

@@ -9,18 +9,30 @@
 export const stories = [
   {
     id: 1,
-    text: 'This is the first part of our story. It all began on a very special day. The sun was shining bright and the world felt full of possibilities. Little did we know what adventures awaited us.',
+    text: "Merhabalar Yağmur Küçük. Gece 12'de gelen bu mesajdaki siteyi açtın. Ne hissediyorsun bilmiyorum ama ben epey heyecanlıyım. Gel beraber hikayemizi yeniden yaşayalım.",
   },
   {
     id: 2,
-    text: 'Then came the moments that changed everything. Laughter filled the air, and memories were made. Every smile told a story of its own. These were the days we would never forget.',
+    text: "Her şey Nisan 2025'te başladı. Ya da en azından ben öyle hatırlıyorum. Pek iyi anmadığımız biri tarafından ekibimize katılmıştın. Bu ekibe katılmanın bizim için ne anlama geleceğini o zamanlar anlamamıştık tabi.",
   },
   {
     id: 3,
-    text: 'Through every challenge, we grew stronger together. The bond we share is unbreakable. Each day brings new reasons to be grateful. This is just the beginning of our incredible journey.',
+    text: 'Hiçbir zaman pek konuşkan biri olmadım. Sen de tam aksi çok sosyal bir insandın. Ne kadar iyi biri olduğunu ilk günden beri anlamıştım. İçinde bulunduğumuz yarışma ortamında henüz yakın bir arkadaşlığımız olmamıştı. Ta ki hackathon gününe kadar.',
   },
   {
     id: 4,
-    text: 'And so, on this special day, we celebrate you. You bring light and joy to everyone around you. May this birthday be as wonderful as you are. Happy Birthday! 🎂',
+    text: 'O gün içinde bulunduğumuz takımı hiçbir zaman unutmam herhalde. Gerginliğim yanı sırasında böyle bir ekiple ve özellikle seninle beraber çalışmak çok keyifliydi. En çok o gün yakınlaştığımızı hissetmiştim.',
+  },
+  {
+    id: 5,
+    text: 'Yarışmayı kazanamadık belki ama iyi vakit geçirdik. Yarışmadan sonra pek görüşemedik. Okulda ara sıra karşılaşmalarımız ve sosyal medyadan etkileşimlerimiz oldu sadece. Ta ki 20 Ocak 2026 gününe kadar.',
+  },
+  {
+    id: 6,
+    text: 'O günden beridir birbirimizi hiç tanımadığımız kadar yakından tanıdık, yakınlaştık. Senin için zor olan bir dönemde senin yanında olmaya çalıştım. Benim için oldukça değerli biri haline geldin. Yanında rahatça konuşabildiğim ve kendim olabildiğim biri oldun. Benim de senin için böyle olduğumu düşünüyorum.',
+  },
+  {
+    id: 7,
+    text: 'Hayatımda biri için özel olarak web sitesiyle uğraşmamışımdır herhalde. Ama senin için değdiğini düşünüyorum. Umarım bu küçük :) sürprizi beğenmişsindir. Daha nice güzel anılar biriktireceğimiz harika bir yaş diliyorum sana. En kısa sürede yüz yüze görüşme dileğiyle. İyi ki doğdun Yağmur! 🎉',
   },
 ]

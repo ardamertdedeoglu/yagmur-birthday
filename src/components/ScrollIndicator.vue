@@ -34,6 +34,7 @@ defineProps({
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .scroll-text {
@@ -96,5 +97,16 @@ defineProps({
 
 .scroll-indicator.dark-text {
   color: var(--text-dark);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 </style>

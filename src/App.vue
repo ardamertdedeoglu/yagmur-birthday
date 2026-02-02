@@ -14,6 +14,11 @@ const setSectionRef = (el, index) => {
   }
 }
 
+const handleStartClicked = (nextIndex) => {
+  // Manually set the next section as active when button is clicked
+  activeIndex.value = nextIndex
+}
+
 onMounted(() => {
   // Use IntersectionObserver for reliable detection with scroll-snap
   observer = new IntersectionObserver(
@@ -61,6 +66,7 @@ onUnmounted(() => {
       :isActive="activeIndex === index"
       :isLast="index === stories.length - 1"
       musicUrl="/yagmur-birthday/music.mp3"
+      @start-clicked="handleStartClicked"
     />
   </main>
 </template>
