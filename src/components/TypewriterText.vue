@@ -47,7 +47,8 @@ const typeText = () => {
       index++
 
       // Check if current character is end of sentence
-      const isSentenceEnd = currentChar === '.' || currentChar === '!' || currentChar === '?'
+      const isSentenceEnd =
+        currentChar === '.' || currentChar === '!' || currentChar === '?' || currentChar === ','
       const nextCharExists = index < props.text.length
 
       // If sentence ends and there's more text, use sentenceDelay; otherwise use normal speed

@@ -99,7 +99,7 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
         <TypewriterText
           :text="story.text"
           :isVisible="shouldShowText"
-          :speed="40"
+          :speed="60"
           :sentenceDelay="600"
           :delay="300"
           @complete="handleTypewriterComplete"
