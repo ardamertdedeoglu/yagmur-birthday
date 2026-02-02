@@ -33,6 +33,6 @@ export const stories = [
   },
   {
     id: 7,
-    text: 'Hayatımda biri için özel olarak web sitesiyle uğraşmamışımdır herhalde. Ama senin için değdiğini düşünüyorum. Umarım bu küçük :) sürprizi beğenmişsindir. Daha nice güzel anılar biriktireceğimiz harika bir yaş diliyorum sana. En kısa sürede yüz yüze görüşme dileğiyle. İyi ki doğdun Yağmur! 🎉',
+    text: 'Hayatımda biri için özel olarak web sitesiyle uğraşmamışımdır herhalde. Ama senin için değdiğini düşünüyorum. Umarım bu "küçük" :) sürprizi beğenmişsindir. Daha nice güzel anılar biriktireceğimiz harika bir yaş diliyorum sana. En kısa sürede yüz yüze görüşme dileğiyle. İyi ki doğdun Yağmur! 🎉',
   },
 ]

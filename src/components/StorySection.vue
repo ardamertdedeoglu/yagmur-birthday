@@ -32,11 +32,17 @@ const hasBeenViewed = ref(false)
 const confettiRef = ref(null)
 const musicPlayerRef = ref(null)
 const typewriterComplete = ref(false)
+const showVolumeWarning = ref(false)
 
 const isFirst = computed(() => props.colorIndex === 0)
 
 const handleTypewriterComplete = async () => {
   typewriterComplete.value = true
+
+  // Show volume warning on first page after typewriter completes
+  if (isFirst.value) {
+    showVolumeWarning.value = true
+  }
 
   if (props.isLast && confettiRef.value) {
     confettiRef.value.triggerConfetti()
@@ -115,6 +121,21 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
     <div v-if="isFirst && typewriterComplete && isActive" class="start-button-wrapper">
       <button class="start-button" @click="handleStartClick">Başla</button>
     </div>
+
+    <!-- Volume Warning Modal -->
+    <Transition name="fade">
+      <div v-if="showVolumeWarning" class="volume-warning-overlay">
+        <div class="volume-warning-box">
+          <h2 class="warning-title">🔊 Ses Açık mı?</h2>
+          <p class="warning-text">En iyi deneyim için lütfen:</p>
+          <ul class="warning-list">
+            <li>Telefonunuzun sessiz modunu kapatın</li>
+            <li>Ses seviyesini kontrol edin</li>
+          </ul>
+          <button class="warning-button" @click="showVolumeWarning = false">Anladım</button>
+        </div>
+      </div>
+    </Transition>
   </section>
 </template>
 
@@ -203,6 +224,121 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+}
+
+/* Volume Warning Modal */
+.volume-warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+.volume-warning-box {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.4s ease;
+}
+
+.warning-title {
+  font-size: 1.75rem;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.warning-text {
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+
+.warning-list {
+  text-align: left;
+  list-style: none;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.warning-list li {
+  padding: 0.5rem 0;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+}
+
+.warning-list li:before {
+  content: '✓';
+  color: var(--color-3);
+  font-weight: bold;
+  margin-right: 0.75rem;
+}
+
+.warning-button {
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--color-2), var(--color-3));
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.warning-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.warning-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 /* Slide up transition */
