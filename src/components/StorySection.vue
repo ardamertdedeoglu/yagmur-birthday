@@ -129,8 +129,8 @@ const shouldShowText = computed(() => props.isActive || hasBeenViewed.value)
           <h2 class="warning-title">🔊 Ses Açık mı?</h2>
           <p class="warning-text">En iyi deneyim için lütfen:</p>
           <ul class="warning-list">
-            <li>Telefonunuzun sessiz modunu kapatın</li>
-            <li>Ses seviyesini kontrol edin</li>
+            <li>Telefonunuzun sessiz modunu kapat</li>
+            <li>Ses seviyesini kontrol et</li>
           </ul>
           <button class="warning-button" @click="showVolumeWarning = false">Anladım</button>
         </div>
